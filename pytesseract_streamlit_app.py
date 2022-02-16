@@ -5,6 +5,11 @@ from pytesserract_extractor import ocr_model
 
 
 # Streamlit App
+from PIL import Image
+import pandas as pd
+import pytesseract
+
+
 """
 # OCR Info Extractor
 """
@@ -17,8 +22,17 @@ if document_file is not None:
         print(document_file)
 
     with st.spinner("Performing Magic and Extracting Text from the Uploaded Image !! Please Wait..."):
-        img, doc_str = ocr_model.get_text(document_file.name)
-        st.image(img)
+        img, cv2_img, doc_str = ocr_model.get_text(document_file.name)
+        col1, col2 = st.columns(2)
+        with col1:
+            st.image(img)
+        st.balloons()
+        with col2:
+            st.image(cv2_img)
+        st.write("Text: ")
+        st.write(doc_str)
+
+        
         # detected_text = [item['text'] for item in result[1]]
         # text, label, label_score = [], [], []
         # tl_x, tl_y, tr_x, tr_y, br_x, br_y, bl_x, bl_y = [], [], [], [], [], [], [], []
@@ -38,8 +52,7 @@ if document_file is not None:
         # df['TLx_round'] = 5 * round(df['TLx']/5)
         # df['TLy_round'] = 5 * round(df['TLy']/5)
         # df = df.sort_values(['TLy_round', 'TLx_round'])
-    st.balloons()
-    st.write(doc_str)
+    
     # st.write(df['Text'].tolist())
     # if st.checkbox("Show Labels"):
     #     st.write(df[['Text', 'Label', 'Label Score']])

@@ -3,6 +3,7 @@ import numpy as np
 import pandas as pd
 from glob import glob
 import pytesseract
+import cv2
 
 
 # Classes
@@ -59,8 +60,17 @@ class OCR:
         # Pytesseract get text
         img_word_df = self._get_text_df(img)
         doc_str = " ".join(img_word_df['text'])
+
+        # Convert image from PIL to CV2 format   
+        cv2_img = np.array(img)
+        h, w, _ = cv2_img.shape
+
+        n_boxes = len(img_word_df['level'])
+        for i in range(n_boxes):
+            x, y, w, h = img_word_df['left'].values[i], img_word_df['top'].values[i], img_word_df['width'].values[i], img_word_df['height'].values[i]
+            cv2.rectangle(cv2_img, (x, y), (x + w, y + h), (0, 255, 0), 2)
        
-        return [img, doc_str]
+        return [img, cv2_img, doc_str]
 
 
 ocr_model = OCR()
