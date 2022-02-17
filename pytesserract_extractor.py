@@ -50,7 +50,7 @@ class OCR:
         # text = pytesseract.image_to_string(img, lang='eng', config=custom_config)
         img_word_df = pytesseract.image_to_data(input_img, lang='eng', config=custom_config, output_type='data.frame')
         img_word_df = img_word_df[img_word_df.conf > -1] # -1 returns Nan
-        img_word_df = img_word_df[img_word_df.conf >= 50] # -1 returns Nan
+        # img_word_df = img_word_df[img_word_df.conf >= 50] # -1 returns Nan
     
         return img_word_df
 
